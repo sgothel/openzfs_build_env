@@ -1,3 +1,4 @@
 /zfs-linux-*/
 /zfs-linux-*.tar
 /zfs/
+/git-push-public.sh
