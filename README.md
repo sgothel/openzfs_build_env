@@ -51,6 +51,9 @@ cd ..
 ## Convenience scrips
 
 You can find convenient removal and install scripts within `scripts` folder.
+- `scripts`: ZFS debian package remova and install scripts
+- `rescue`: Manual ZFS rescue scripts
+- `setup`: Misc ZFS setup and tuning scripts
 
 ### Manual ZFS Rescue
 
