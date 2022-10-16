@@ -52,6 +52,18 @@ cd ..
 
 You can find convenient removal and install scripts within `scripts` folder.
 
+### Manual ZFS Rescue
+
+Documented shell script `rescue/chroot_zfs.sh` shows how-to
+- auto import local zfs pools
+- chroot into the imported root filesystem
+  - bind special devices and pipes to zfs realm
+  - chroot into the zfs system
+- shows three typical recovery tasks
+  - update-initramfs -u -k all
+  - update-grub
+  - grub-install /dev/disk/by-id/your_boot_root_device
+
 ## ZFS Compatibility Settings 
 
 Following compatibility feature sets have been tested
