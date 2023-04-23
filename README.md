@@ -3,7 +3,7 @@
 [Original document location](https://jausoft.com/cgit/openzfs/openzfs_build_env.git/about/).
 
 Current environment covers [OpenZFS](https://openzfs.github.io/openzfs-docs/) 
-for GNU/Linux version [2.1.6](https://github.com/openzfs/zfs/releases/tag/zfs-2.1.6).
+for GNU/Linux version [2.1.11](https://github.com/openzfs/zfs/releases/tag/zfs-2.1.11).
 
 ## Debian Dependencies
 
@@ -23,7 +23,7 @@ Fetching the [original sources](https://github.com/openzfs/zfs).
 ```bash
 git clone https://github.com/openzfs/zfs
 cd zfs
-git checkout -b b_zfs-2.1.6 zfs-2.1.6
+git checkout -b b_zfs-2.1.11 zfs-2.1.11
 cd ..
 ```
 
