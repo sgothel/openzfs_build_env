@@ -5,7 +5,7 @@
 Current environment covers [OpenZFS](https://openzfs.github.io/openzfs-docs/)
 for GNU/Linux version [2.2.6](https://github.com/openzfs/zfs/releases/tag/zfs-2.2.6).
 
-Also available are branches with [Debian build fixes](git://jausoft.com/srv/scm/openzfs/zfs.git).
+I also host branches with [Debian build fixes](https://jausoft.com/cgit/openzfs/zfs.git).
 
 ## Debian Dependencies
 
