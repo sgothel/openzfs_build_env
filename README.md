@@ -44,21 +44,20 @@ cd ..
 
 ## Build
 
-The following is captured within `make-all.sh` script.
+The following is captured within [make-all.sh](./make-all.sh) script,
+which shall be invoked within this `openzfs_build_env` directory.
 
 ```bash
 mkdir -p build
 
 cd zfs
 git clean -d -f -x
-# select branch/tag ..
 ./autogen.sh
 ./configure --enable-systemd
 make -j$(nproc)
-make -j1 deb-utils deb-dkms
+make -j1 deb
 mv *.tar.gz *.deb ../build
 make clean
-rm -f *.rpm
 cd ..
 ```
 
