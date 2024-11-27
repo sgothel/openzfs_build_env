@@ -49,8 +49,9 @@ do_build()
     echo
     echo "MAKE ZFS: build debian packages"
     echo
-    #rm -f contrib/bash_completion.d/zpool
-    #make -j1 native-deb
+    # rm -f contrib/bash_completion.d/zpool
+    # make -j1 native-deb
+    #
     make -j1 deb
     if [ $? -ne 0 ] ; then
         echo "MAKE ZFS: Error native-deb"
