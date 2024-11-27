@@ -21,6 +21,7 @@ mount --bind /proc/ /mnt/proc/
 
 # Potentially you might need to
 #
+# - fix/edit /etc/default/zfs
 # - update-initramfs -u -k all
 # - update-grub
 # - grub-install /dev/disk/by-id/your_boot_root_device
