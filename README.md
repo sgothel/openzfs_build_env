@@ -11,7 +11,7 @@ I also host branches with [Debian build fixes](https://jausoft.com/cgit/openzfs/
 Warning, OpenZFS 2.2.6 and 2.3.0-rc3 won't get compiled under Debian 13 currently.
 This is probably due to `rpmbuilder` spec mismatch.
 
-However, build for Debian 12 work well under Devian 13.
+However, build for Debian 12 work well under Debian 13.
 
 ## Debian Dependencies
 
