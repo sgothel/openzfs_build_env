@@ -85,7 +85,7 @@ You can find convenient removal and install scripts within `scripts` folder.
 
 ### Manual ZFS Rescue
 
-Documented shell script `rescue/chroot_zfs.sh` shows how-to
+Documented shell script `rescue/chroot_mount.sh` shows how-to
 - auto import local zfs pools
 - chroot into the imported root filesystem
   - bind special devices and pipes to zfs realm
@@ -95,6 +95,28 @@ Documented shell script `rescue/chroot_zfs.sh` shows how-to
   - update-grub
   - grub-install /dev/disk/by-id/your\_boot\_root\_device
     - perhaps repeat this for all your ZFS pool devices
+
+### Update Procedure
+
+The following procedure covers the openzfs update procedure.
+
+```bash
+cd openzfs_build_env
+
+# Uninstall old zfs packages
+sh scripts/zfs-remove.sh
+
+# Install new zfs packages
+sh scripts/zfs-2.2.7-1-install-debian12-amd64.sh
+
+# Update /etc/default/zfs
+cd /etc/default/
+diff zfs.cpy zfs
+vi zfs.cpy zfs
+
+# Regenerate initrd files for booting
+update-initramfs -u -k all
+```
 
 ## ZFS Compatibility Settings
 
