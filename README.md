@@ -3,12 +3,12 @@
 [Original document location](https://jausoft.com/cgit/openzfs/openzfs_build_env.git/about/).
 
 Current environment covers [OpenZFS](https://openzfs.github.io/openzfs-docs/)
-for GNU/Linux version [2.2.6](https://github.com/openzfs/zfs/releases/tag/zfs-2.2.6).
+for GNU/Linux version [2.2.7](https://github.com/openzfs/zfs/releases/tag/zfs-2.2.7).
 
 I also host branches with [Debian build fixes](https://jausoft.com/cgit/openzfs/zfs.git).
 
 ## Debian 13 Notes
-Warning, OpenZFS 2.2.6 and 2.3.0-rc3 won't get compiled under Debian 13 currently.
+Warning, OpenZFS 2.2.7 and 2.3.0-rc3 won't get compiled under Debian 13 currently.
 This is probably due to `rpmbuilder` spec mismatch.
 
 However, build for Debian 12 work well under Debian 13.
@@ -43,7 +43,7 @@ Fetching the [original sources](https://github.com/openzfs/zfs).
 ```bash
 git clone https://github.com/openzfs/zfs
 cd zfs
-git checkout -b b_zfs-2.2.6 zfs-2.2.6
+git checkout -b b_zfs-2.2.7 zfs-2.2.7
 cd ..
 ```
 
@@ -53,7 +53,7 @@ Fetching the [jausoft branch](git://jausoft.com/srv/scm/openzfs/zfs.git)
 ```bash
 git clone git://jausoft.com/srv/scm/openzfs/zfs.git
 cd zfs
-git checkout -b b_zfs_2.2.6_debian12 --track origin/b_zfs_2.2.6_debian12
+git checkout -b b_zfs_2.2.7_debian12 --track origin/b_zfs_2.2.7_debian12
 cd ..
 ```
 
