@@ -25,6 +25,23 @@ sudo apt install alien autoconf automake build-essential debhelper-compat dh-aut
 apt install linux-headers-amd64 libselinux-dev parted lsscsi wget ksh gdebi python3-distutils
 ```
 
+#### Grub2 2.12 Backport
+See [Debian Using backports](https://wiki.debian.org/Backports#Using_backports)
+- Add /etc/apt/sources.list
+```
+deb http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+```
+- Update package database and show `grub2` packages
+```
+apt update
+apt show grub2 -a
+```
+- Install `grub2` 2.12 backport
+```
+apt install grub2/bookworm-backports
+```
+
 ### Debian 13
 Install build dependencies for Debian 13
 following [OpenZFS's Building ZFS](https://openzfs.github.io/openzfs-docs/Developer%20Resources/Building%20ZFS.html).

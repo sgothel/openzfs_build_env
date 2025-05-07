@@ -1,25 +1,17 @@
 #!/bin/bash
 
+backupname=backupdisk1
+
 DISK1=ata-QEMU_HARDDISK_QM00007
-DISK2=ata-QEMU_HARDDISK_QM00009
-DISK3=ata-QEMU_HARDDISK_QM00011
 
-export ROOTFS_DIR="/mnt"
-
-export POOL=tpool2
+export POOL=${backupname}
 export ZFS_COMPRESSION_METHOD=lz4
 # export ZFS_COMPRESSION_METHOD=zstd
 
-#
-# Manually enabled ZFS features for GRUB compatibility!
-# See https://wiki.archlinux.org/title/ZFS#GRUB-compatible_pool_creation
-# Tested w/ Grub 2.04-19
-#
 zpool create -f -o ashift=12 -o autoexpand=on \
       -O atime=off -O compression=off \
-      -O mountpoint=/ -R ${ROOTFS_DIR} \
+      -O mountpoint=/mnt/${backupname} \
       -d \
-        -o compatibility=grub2_readonly \
         -o feature@allocation_classes=enabled \
         -o feature@async_destroy=enabled \
         -o feature@block_cloning=enabled \
@@ -42,16 +34,17 @@ zpool create -f -o ashift=12 -o autoexpand=on \
         -o feature@userobj_accounting=enabled \
         -o feature@zilsaxattr=enabled \
         -o feature@zpool_checkpoint=enabled \
+        \
+        -o feature@encryption=enabled \
       \
-      $POOL raidz1 \
-      /dev/disk/by-id/$DISK1-part3 \
-      /dev/disk/by-id/$DISK2-part3 \
-      /dev/disk/by-id/$DISK3-part3
+      $POOL \
+      /dev/disk/by-id/$DISK1-part3 
 
 zpool autoexpand=on $POOL
 zpool autoreplace=off $POOL
 zpool listsnapshots=off $POOL
 
+zfs set mountpoint=/mnt/${backupname} $POOL
 zfs set dedup=off $POOL
 zfs set compression=off $POOL
 zfs set atime=off $POOL
@@ -60,6 +53,6 @@ zfs set aclinherit=passthrough $POOL
 zfs set acltype=posixacl $POOL
 zfs set xattr=sa $POOL
 
-# zpool export $POOL
-# zpool import -R $ROOTFS_DIR -N $POOL
+# Create Datasets ..
+zfs create -o encryption=on -o keyformat=passphrase $POOL/backup-host
 
