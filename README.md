@@ -3,7 +3,7 @@
 [Original document location](https://jausoft.com/cgit/openzfs/openzfs_build_env.git/about/).
 
 Current environment covers [OpenZFS](https://openzfs.github.io/openzfs-docs/)
-for GNU/Linux version [2.2.7](https://github.com/openzfs/zfs/releases/tag/zfs-2.2.7).
+for GNU/Linux version [2.3.2](https://github.com/openzfs/zfs/releases/tag/zfs-2.3.2).
 
 I also host branches with [Debian build fixes](https://jausoft.com/cgit/openzfs/zfs.git).
 
@@ -60,7 +60,7 @@ Fetching the [original sources](https://github.com/openzfs/zfs).
 ```bash
 git clone https://github.com/openzfs/zfs
 cd zfs
-git checkout -b b_zfs-2.2.7 zfs-2.2.7
+git checkout -b b_zfs-2.3.2 zfs-2.3.2
 cd ..
 ```
 
@@ -70,7 +70,7 @@ Fetching the [jausoft branch](git://jausoft.com/srv/scm/openzfs/zfs.git)
 ```bash
 git clone git://jausoft.com/srv/scm/openzfs/zfs.git
 cd zfs
-git checkout -b b_zfs_2.2.7_debian12 --track origin/b_zfs_2.2.7_debian12
+git checkout -b b_zfs_2.3.2_debian12 --track origin/b_zfs_2.3.2_debian12
 cd ..
 ```
 
@@ -124,7 +124,7 @@ cd openzfs_build_env
 sh scripts/zfs-remove.sh
 
 # Install new zfs packages
-sh scripts/zfs-2.2.7-1-install-debian12-amd64.sh
+sh scripts/zfs-2.3.2-1-install-debian12-amd64.sh
 
 # Update /etc/default/zfs
 cd /etc/default/
@@ -141,4 +141,5 @@ Following compatibility feature sets have been tested
 
 - Read-Only Feature Sets `etc/zfs/compatibility.d/readonly`
 - Extended GRUB2 and Read-Only Feature Sets `etc/zfs/compatibility.d/grub2_readonly`
+  - Best to install `grub2` version >= 2.12, e.g. Debian 12 Backport (see above)
 
