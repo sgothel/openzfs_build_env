@@ -29,9 +29,9 @@ do_build()
     echo
     echo "MAKE ZFS: configure"
     echo
-    DEBUG_ON_OPTS="--enable-debug --enable-debuginfo --enable-debug-kmem --enable-debug-kmem-tracking"
-    DEBUG_OFF_OPTS="--disable-debug --disable-debuginfo --disable-debug-kmem --disable-debug-kmem-tracking"
-    ./configure --enable-systemd ${DEBUG_OFF_OPTS}
+    #DEBUG_OPTS="--enable-debug --enable-debuginfo --enable-debug-kmem --enable-debug-kmem-tracking"
+    DEBUG_OPTS="--disable-debug --disable-debuginfo --disable-debug-kmem --disable-debug-kmem-tracking"
+    ./configure --enable-systemd ${DEBUG_OPTS}
     if [ $? -ne 0 ] ; then
         echo "MAKE ZFS: Error configure"
         return 1
@@ -54,7 +54,7 @@ do_build()
     #
     make -j1 deb
     if [ $? -ne 0 ] ; then
-        echo "MAKE ZFS: Error native-deb"
+        echo "MAKE ZFS: Error deb"
         return 1
     fi
 
