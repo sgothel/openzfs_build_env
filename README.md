@@ -3,7 +3,7 @@
 [Original document location](https://jausoft.com/cgit/openzfs/openzfs_build_env.git/about/).
 
 Current environment covers [OpenZFS](https://openzfs.github.io/openzfs-docs/)
-for GNU/Linux version [2.3.5](https://github.com/openzfs/zfs/releases/tag/zfs-2.3.5).
+for GNU/Linux version [2.4.0](https://github.com/openzfs/zfs/releases/tag/zfs-2.4.0).
 
 I also host branches with [Debian build fixes](https://jausoft.com/cgit/openzfs/zfs.git).
 
@@ -44,7 +44,7 @@ Fetching the [original sources](https://github.com/openzfs/zfs).
 ```bash
 git clone https://github.com/openzfs/zfs
 cd zfs
-git checkout -b b_zfs-2.3.5 zfs-2.3.5
+git checkout -b b_zfs-2.4.0 zfs-2.4.0
 cd ..
 ```
 
@@ -54,7 +54,7 @@ Fetching the [jausoft branch](git://jausoft.com/srv/scm/openzfs/zfs.git)
 ```bash
 git clone git://jausoft.com/srv/scm/openzfs/zfs.git
 cd zfs
-git checkout -b b_zfs_2.3.5_debian13 --track origin/b_zfs_2.3.5_debian13
+git checkout -b b_zfs_2.4.0_debian13 --track origin/b_zfs_2.4.0_debian13
 cd ..
 ```
 
@@ -109,7 +109,7 @@ cd openzfs_build_env
 sh scripts/zfs-remove.sh
 
 # Install new zfs packages
-sh scripts/zfs-2.3.5-1-install-debian13-amd64.sh
+sh scripts/zfs-2.4.0-1-install-debian13-amd64.sh
 
 # Update /etc/default/zfs
 cd /etc/default/
