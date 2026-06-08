@@ -12,6 +12,10 @@ export POOL=tpool2
 export ZFS_COMPRESSION_METHOD=lz4
 # export ZFS_COMPRESSION_METHOD=zstd
 
+# default recordsize 128k, use 1M for big files
+# export ZFS_RECORDSIZE=128k
+export ZFS_BIG_RECORDSIZE=1M
+
 #
 # Manually enabled ZFS features for GRUB compatibility!
 # See https://wiki.archlinux.org/title/ZFS#GRUB-compatible_pool_creation
@@ -76,8 +80,10 @@ zfs create -o mountpoint=/root $POOL/users/root
 
 zfs create -o mountpoint=/backup -o compression=${ZFS_COMPRESSION_METHOD} $POOL/backup
 zfs create -o mountpoint=/data $POOL/data
+zfs create -o mountpoint=/data2 -o recordsize=${ZFS_BIG_RECORDSIZE} ${POOL}/data2
 zfs create -o mountpoint=/srv $POOL/services
 zfs create -o mountpoint=/usr/local/projects -o compression=${ZFS_COMPRESSION_METHOD} $POOL/projects
+zfs create -o mountpoint=/var/lib/mysql -o recordsize=16K ${POOL}/mysql
 
 if [ ! -z "$MYSWAPSIZE" ]; then
     # SWAP

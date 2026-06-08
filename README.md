@@ -84,6 +84,7 @@ You can find convenient removal and install scripts within `scripts` folder.
   - to be executed from `openzfs_build_env` project root directory
 - `rescue`: Manual ZFS rescue scripts
 - `setup`: Misc ZFS setup and tuning scripts
+- `scenarios`: Misc ZFS scenarios
 
 ### Manual ZFS Rescue
 

@@ -36,7 +36,10 @@ function all_zsync()
     one_zsync tpool/services
     one_zsync tpool/data
     one_zsync tpool/backup
+    one_zsync tpool/data2
+    one_zsync jordan/mysql
 
+    ## zfs inherit -r mountpoint ${dst_pool}/${dst_dset}
     zfs list -r ${dst_pool}
     zfs list -r -t snapshot ${dst_pool}
 
