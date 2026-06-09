@@ -1,0 +1,126 @@
+#! /bin/bash -e
+
+#
+# Setup ZFS pool
+#
+
+export BASE_DIR=`dirname $(readlink -f "${BASH_SOURCE[0]}")`
+
+source "${BASE_DIR}/install.cfg"
+
+source "${BASE_DIR}/common.sh"
+
+export ZFS_COMPRESSION_METHOD=${ZFS_COMPRESSION_METHOD:-lz4}
+export ZFS_BIG_RECORDSIZE=1M
+
+modprobe zfs
+
+# If you are re-using a MDADM disk, clear it as necessary:
+# 
+# If the disk was previously used in an MD array, zero the superblock:
+#apt install --yes mdadm
+#mdadm --zero-superblock --force /dev/disk/by-id/$DISK1
+#mdadm --zero-superblock --force /dev/disk/by-id/$DISK2
+#mdadm --zero-superblock --force /dev/disk/by-id/$DISK3
+ 
+# 2.2 Partition your disks:
+#
+# We assume advanced format: 4096 bytes per sector, 8 multiple
+#
+# EF02 Bios-Boot (Grub core)
+# EF00 EFI System
+# BF01 ZFS Root
+for dname in "${DISK1}" "${DISK2}" "${DISK3}" ; do
+    sgdisk --zap-all \
+      --new 1::+1M   --typecode=1:EF02 \
+      --new 2::+700M --typecode=2:EF00 \
+      --new 3::0     --typecode=3:BF01 \
+      "/dev/disk/by-id/${dname}"
+done
+
+sleep 3
+sync
+
+mkfs.fat -n EFISYS -F32 /dev/disk/by-id/$DISK1-part2
+mkfs.fat -n EFISYS -F32 /dev/disk/by-id/$DISK2-part2
+mkfs.fat -n EFISYS -F32 /dev/disk/by-id/$DISK3-part2
+
+##
+## Create POOL
+##
+
+mkdir -p ${ROOTFS_DIR}
+
+#
+# Manually enabled ZFS features for GRUB compatibility!
+# See https://wiki.archlinux.org/title/ZFS#GRUB-compatible_pool_creation
+# Tested w/ Grub 2.04-19
+#
+zpool create -f -o ashift=12 -o autoexpand=on \
+      -O atime=off -O compression=off \
+      -O mountpoint=/ -R ${ROOTFS_DIR} \
+      -d \
+        -o compatibility=grub2_readonly \
+        -o feature@allocation_classes=enabled \
+        -o feature@async_destroy=enabled \
+        -o feature@block_cloning=enabled \
+        -o feature@bookmarks=enabled \
+        -o feature@device_rebuild=enabled \
+        -o feature@embedded_data=enabled \
+        -o feature@empty_bpobj=enabled \
+        -o feature@enabled_txg=enabled \
+        -o feature@extensible_dataset=enabled \
+        -o feature@filesystem_limits=enabled \
+        -o feature@hole_birth=enabled \
+        -o feature@large_blocks=enabled \
+        -o feature@livelist=enabled \
+        -o feature@log_spacemap=enabled \
+        -o feature@lz4_compress=enabled \
+        -o feature@project_quota=enabled \
+        -o feature@resilver_defer=enabled \
+        -o feature@spacemap_histogram=enabled \
+        -o feature@spacemap_v2=enabled \
+        -o feature@userobj_accounting=enabled \
+        -o feature@zilsaxattr=enabled \
+        -o feature@zpool_checkpoint=enabled \
+      \
+      $POOL raidz2 \
+      /dev/disk/by-id/$DISK1-part3 \
+      /dev/disk/by-id/$DISK2-part3 \
+      /dev/disk/by-id/$DISK3-part3
+
+zpool autoexpand=on $POOL
+zpool autoreplace=off $POOL
+zpool listsnapshots=off $POOL
+
+zfs set dedup=off $POOL
+zfs set compression=off $POOL
+zfs set atime=off $POOL
+zfs set mountpoint=none $POOL
+zfs set aclinherit=passthrough $POOL
+zfs set acltype=posixacl $POOL
+zfs set xattr=sa $POOL
+
+# Create Dataset System Root 
+zfs create -o mountpoint=none $POOL/system
+zfs create -o mountpoint=/ $POOL/system/debian
+#zfs mount $POOL/system/debian
+zpool set bootfs=$POOL/system/debian $POOL
+
+zfs create -o compression=${ZFS_COMPRESSION_METHOD} $POOL/system/debian/var
+
+# Create Datasets ..
+zfs create -o mountpoint=/home $POOL/users
+zfs create -o mountpoint=/root $POOL/users/root
+
+zfs create -o mountpoint=/backup -o compression=${ZFS_COMPRESSION_METHOD} $POOL/backup
+zfs create -o mountpoint=/data $POOL/data
+zfs create -o mountpoint=/data2 -o recordsize=${ZFS_BIG_RECORDSIZE} ${POOL}/data2
+zfs create -o mountpoint=/srv $POOL/services
+zfs create -o mountpoint=/usr/local/projects -o compression=${ZFS_COMPRESSION_METHOD} $POOL/projects
+zfs create -o mountpoint=/var/lib/mysql -o recordsize=16K ${POOL}/mysql
+
+## Export / Import ( '-d ..' also changes the dev names )
+##zpool export $POOL
+##zpool import -d /dev/disk/by-id -R ${ROOTFS_DIR} $POOL
+
