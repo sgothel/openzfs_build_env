@@ -27,7 +27,7 @@ dpkg -i $ZFSDEBDIR/pam-zfs-key_2.4.2-1_amd64.deb
 dpkg -i $ZFSDEBDIR/zfs-initramfs_2.4.2-1_amd64.deb
 
 # apt-mark manual zfs-initramfs zfs zfs-dkms libzfs2 libzfs4 libzfs5 libzpool2 libzpool4 libzpool5 libuutil1 libuutil3 libnvpair1 libnvpair3
-apt-mark manual zfs-initramfs zfs pam-zfs-key zfs-dkms libzfs5 libzfs6 libzfs7 libzpool5 libzpool6 libzpool7 libuutil3 libnvpair3
+apt-mark manual zfs-initramfs zfs pam-zfs-key zfs-dkms libzfs7 libzpool7 libuutil3 libnvpair3
 
 echo
 echo
