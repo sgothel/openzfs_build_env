@@ -12,12 +12,23 @@
 #   - zfs rename -f ${POOL}/${DS_DST} ${POOL}/${DS_SRC}
 #   - zfs destroy -r ${POOL}/${DS_SRC}_old
 #
+# recordsize summary
+# - 1MiB for general-purpose file sharing/storage
+# - 1MiB for BitTorrent download folders—this minimizes the impact of fragmentation!
+# - 64KiB for KVM virtual machines using Qcow2 file-based storage
+# - 16KiB for MySQL InnoDB
+# - 8KiB for PostgreSQL
+# see
+# - https://openzfs.github.io/openzfs-docs/Performance%20and%20Tuning/Workload%20Tuning.html
+# - https://cr0x.net/en/zfs-recordsize-file-performance/
+# - https://klarasystems.com/articles/tuning-recordsize-in-openzfs/
+#
 POOL=tpool
 DS_SRC=data2
 DS_DST=data2_copy
 DS_DST_OPTS="-o recordsize=1M"
 
-TIMESTAMP=`date +%Y-%m-%d-%H%M`
+TIMESTAMP=`date +%Y%m%d-%H%M`
 SNAPNAME=transfer_${TIMESTAMP}
 
 zfs create ${DS_DST_OPTS} ${POOL}/${DS_DST}
