@@ -7,12 +7,16 @@ NDISK3=ata-WDC_WD40EFZX-68AWUN0_WD-WX92DA02K427
 # BF01 ZFS Root
 for dname in "${NDISK1}" "${NDISK2}" "${NDISK3}" ; do
     sgdisk --zap-all \
+      --set-alignment=4k -I \
       --new 1::+1M   --typecode=1:EF02 \
       --new 2::0     --typecode=2:BF01 \
       "/dev/disk/by-id/${dname}"
 done
 
+sleep 3
 sync
 
 echo "Now replace the disk .."
-echo "zpool replace risa 12458555210078177352 /dev/disk/by-id/ata-WDC_WD40EFZX-68AWUN0_WD-WX92DA0798JN-part1"
+echo "zpool replace POOL <removed-disk-id-1> /dev/disk/by-id/${NDISK1}-part2"
+echo "zpool replace POOL <removed-disk-id-2> /dev/disk/by-id/${NDISK2}-part2"
+echo "zpool replace POOL <removed-disk-id-3> /dev/disk/by-id/${NDISK3}-part2"

@@ -32,6 +32,7 @@ modprobe zfs
 # BF01 ZFS Root
 for dname in "${DISK1}" "${DISK2}" "${DISK3}" ; do
     sgdisk --zap-all \
+      --set-alignment=4k -I \
       --new 1::+1M   --typecode=1:EF02 \
       --new 2::+700M --typecode=2:EF00 \
       --new 3::0     --typecode=3:BF01 \
