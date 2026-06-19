@@ -7,7 +7,7 @@ NDISK3=ata-WDC_WD40EFZX-68AWUN0_WD-WX92DA02K427
 # BF01 ZFS Root
 for dname in "${NDISK1}" "${NDISK2}" "${NDISK3}" ; do
     sgdisk --zap-all \
-      --set-alignment=4k -I \
+      --set-alignment=4096 --align-end \
       --new 1::+1M   --typecode=1:EF02 \
       --new 2::0     --typecode=2:BF01 \
       "/dev/disk/by-id/${dname}"
