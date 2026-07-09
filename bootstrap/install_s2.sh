@@ -143,17 +143,14 @@ EOF
 
 on_chroot << EOF
     # SWAP
-    zfs create -V $MYSWAPSIZE -b $(getconf PAGESIZE) -o compression=zle \
+    zfs create -V $MYSWAPSIZE \
+          -o volblocksize=16384 \
+          -o compression=off \
+          -o dedup=off \
           -o logbias=throughput -o sync=always \
           -o primarycache=metadata -o secondarycache=none \
           -o com.sun:auto-snapshot=false $POOL/swap
 
-    zfs set compression=zle $POOL/swap
-    zfs set logbias=throughput $POOL/swap
-    zfs set sync=always $POOL/swap
-    zfs set primarycache=metadata $POOL/swap
-    zfs set secondarycache=none $POOL/swap
-    zfs set com.sun:auto-snapshot=false $POOL/swap
     zfs set checksum=off $POOL/swap
 
     mkswap -f /dev/zvol/$POOL/swap
