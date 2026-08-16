@@ -5,8 +5,10 @@ DISK2=ata-QEMU_HARDDISK_QM00009
 DISK3=ata-QEMU_HARDDISK_QM00011
 
 export ROOTFS_DIR="/mnt"
+
+# WARNING: ZFS ZVOL swap on Linux is buggy!
+# See <https://github.com/openzfs/zfs/issues/7734>
 # export MYSWAPSIZE=64G
-# export MYSWAPSIZE=1G
 
 export POOL=tpool2
 export ZFS_COMPRESSION_METHOD=lz4
@@ -87,15 +89,17 @@ zfs create -o mountpoint=/var/lib/mysql -o recordsize=16K ${POOL}/mysql
 
 if [ ! -z "$MYSWAPSIZE" ]; then
     # SWAP
-    zfs create -V $MYSWAPSIZE \
-          -o volblocksize=16384 \
+    zfs create -V ${MYSWAPSIZE} \
+          -b $(getconf PAGESIZE) \
           -o compression=off \
           -o dedup=off \
+          -o checksum=off \
           -o logbias=throughput -o sync=always \
           -o primarycache=metadata -o secondarycache=none \
           -o com.sun:auto-snapshot=false $POOL/swap
 
-    # zfs set checksum=off $POOL/swap
+    # vm.swappiness=10 or even lower?
+    # sync=standard for speed-up, but perhaps not freeing mem asap
 
     mkswap -f /dev/zvol/$POOL/swap
     echo /dev/zvol/$POOL/swap none swap defaults 0 0 >> /etc/fstab
